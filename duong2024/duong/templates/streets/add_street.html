@@ -12,13 +12,18 @@
       </div>
       <div class="form-group">
         {{ form.name.errors }}
-        <label for="id_name">Tên Đường <span class="text-danger">*</span></label>
+        <label for="id_name">Tên Đường <span class="text-danger">* Bắt buộc nhập</span></label>
         {{ form.name }}
       </div>
       <div class="form-group">
         {{ form.category.errors }}
-        <label for="id_category">Phân Loại</label>
+        <label for="id_category">Phân Loại1</label>
         {{ form.category }}
+      </div>
+      <div class="form-group">
+        {{ form.category2.errors }}
+        <label for="id_category">Phân Loại2</label>
+        {{ form.category2 }}
       </div>
       <div class="form-group">
         {{ form.description.errors }}

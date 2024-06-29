@@ -18,10 +18,15 @@ def home(request):
         context['user_authenticated'] = True
     return render(request, 'streets/home.html', context)
 
+from django.core.paginator import Paginator
 def street_list(request):
     streets = Street.objects.all()
+    paginator = Paginator(streets, 15)  # Chia dữ liệu thành 15 tên đường mỗi trang
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'streets': streets
+        'streets': streets,
+        'page_obj': page_obj
     }
     if request.user.is_authenticated:
         context['user_authenticated'] = True
@@ -115,4 +120,53 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect(reverse_lazy('login'))
+    # return redirect(reverse_lazy('login'))
+    return redirect(reverse_lazy('home'))
+
+from tablib import Dataset
+from .forms import UploadFileForm
+from .resources import StreetResource
+from django.http import HttpResponse
+
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            dataset = Dataset()
+            new_streets = dataset.load(file.read(), format='xlsx')
+
+            street_resource = StreetResource()
+            result = street_resource.import_data(dataset, dry_run=True)  # Test the data import
+
+            if not result.has_errors():
+                street_resource.import_data(dataset, dry_run=False)  # Actually import now
+                messages.success(request, 'Dữ liệu đã được import thành công.')
+            else:
+                messages.error(request, 'Đã có lỗi xảy ra trong quá trình import dữ liệu.')
+
+            return redirect('upload_file')
+    else:
+        form = UploadFileForm()
+    context = {
+        'form': form
+    }
+    if request.user.is_authenticated:
+        context['user_authenticated'] = True
+    return render(request, 'streets/upload_file.html', context)
+
+def export_streets_csv(request):
+    street_resource = StreetResource()
+    dataset = street_resource.export()
+
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="streets.csv"'
+    return response
+
+def export_streets_xlsx(request):
+    street_resource = StreetResource()
+    dataset = street_resource.export()
+
+    response = HttpResponse(dataset.xlsx, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="streets.xlsx"'
+    return response

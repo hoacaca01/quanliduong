@@ -8,7 +8,8 @@
         <tr>
           <th scope="col">STT</th>
           <th scope="col">Tên Đường</th>
-          <th scope="col">Phân Loại</th>
+          <th scope="col">Phân Loại1</th>
+          <th scope="col">Phân Loại2</th>
           <th scope="col">Mô Tả</th>
           <th scope="col">Mức Quan Trọng</th>
           <th scope="col">Tầm Quan Trọng</th>
@@ -23,6 +24,7 @@
             <td>{{ street.stt }}</td>
             <td><a href="{% url 'street_detail' street.pk %}">{{ street.name }}</a></td>
             <td>{{ street.category }}</td>
+            <td>{{ street.category2 }}</td>
             <td>{{ street.description }}</td>
             <td>{{ street.importance_level }}</td>
             <td>{{ street.significance }}</td>

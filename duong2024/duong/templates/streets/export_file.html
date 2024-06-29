@@ -1,0 +1,18 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Xuất Dữ Liệu Tên Đường</h1>
+    <div class="mt-4">
+      <a href="{% url 'export_streets_csv' %}" class="btn btn-success">Xuất dữ liệu tên đường dưới dạng CSV</a>
+      <a href="{% url 'export_streets_xlsx' %}" class="btn btn-primary">Xuất dữ liệu tên đường dưới dạng Excel (XLSX)</a>
+    </div>
+    {% if messages %}
+      <div class="mt-4">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

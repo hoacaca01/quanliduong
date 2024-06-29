@@ -1,0 +1,27 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="card-title mb-4">Thêm Tên Đường Bằng File Excel</h1>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.file.label_tag }}
+          {{ form.file }}
+        </div>
+        <button type="submit" class="btn btn-primary">Tải file lên</button>
+      </form>
+      {% if messages %}
+        <div class="mt-4">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

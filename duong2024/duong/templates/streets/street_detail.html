@@ -2,27 +2,6 @@
 {% block content %}
   <h1 class="my-4"><strong>Tên Đường:</strong> {{ street.name }}</h1>
   <h2 class="card-title">Bản đồ vị trí đường {{ street.name }}</h2>
-<!--  <div id="map" style="height: 400px; width: 100%;"></div>-->
-<!--  &lt;!&ndash; Thư viện Leaflet &ndash;&gt;-->
-<!--  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />-->
-<!--  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>-->
-<!--  <script>-->
-<!--      // Khởi tạo Leaflet Map với tọa độ tỉnh Quảng Bình-->
-<!--        var map = L.map('map').setView([{{ street.longitude }}, {{ street.latitude }}], 18);-->
-
-
-<!--      // Thêm layer Tile cho bản đồ-->
-<!--        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {-->
-<!--            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'-->
-<!--        }).addTo(map);-->
-
-<!--      // Thêm marker cho vị trí-->
-<!--      L.marker([{{ street.latitude }}, {{ street.longitude }}])-->
-<!--          .bindPopup('Đây là đường {{ street.name }}')-->
-<!--          .addTo(map)-->
-<!--          .openPopup();-->
-<!--  </script>-->
-
   <div id="map" style="height: 400px; width: 100%;"></div>
   <!-- Thư viện Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -84,7 +63,8 @@
   <h2 class="card-title"></h2>
   <div class="row">
     <div class="col-md-12">
-      <p><strong>Phân Loại:</strong> {{ street.category }}</p>
+      <p><strong>Phân Loại1:</strong> {{ street.category }}</p>
+      <p><strong>Phân Loại2:</strong> {{ street.category2 }}</p>
       <p><strong>Mô Tả:</strong> {{ street.description }}</p>
       <p><strong>Mức Quan Trọng:</strong> {{ street.importance_level }}</p>
       <p><strong>Tầm Quan Trọng:</strong> {{ street.significance }}</p>

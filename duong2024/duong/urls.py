@@ -12,4 +12,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('search/', views.search_street, name='search_street'),
+    path('upload/', views.upload_file, name='upload_file'),
+    path('export/csv/', views.export_streets_csv, name='export_streets_csv'),
+    path('export/xlsx/', views.export_streets_xlsx, name='export_streets_xlsx'),
 ]
