@@ -1,0 +1,97 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h1 class="my-4"><strong>Tên Đường:</strong> {{ street.name }}</h1>
+  <h2 class="card-title">Bản đồ vị trí đường {{ street.name }}</h2>
+<!--  <div id="map" style="height: 400px; width: 100%;"></div>-->
+<!--  &lt;!&ndash; Thư viện Leaflet &ndash;&gt;-->
+<!--  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />-->
+<!--  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>-->
+<!--  <script>-->
+<!--      // Khởi tạo Leaflet Map với tọa độ tỉnh Quảng Bình-->
+<!--        var map = L.map('map').setView([{{ street.longitude }}, {{ street.latitude }}], 18);-->
+
+
+<!--      // Thêm layer Tile cho bản đồ-->
+<!--        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {-->
+<!--            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'-->
+<!--        }).addTo(map);-->
+
+<!--      // Thêm marker cho vị trí-->
+<!--      L.marker([{{ street.latitude }}, {{ street.longitude }}])-->
+<!--          .bindPopup('Đây là đường {{ street.name }}')-->
+<!--          .addTo(map)-->
+<!--          .openPopup();-->
+<!--  </script>-->
+
+  <div id="map" style="height: 400px; width: 100%;"></div>
+  <!-- Thư viện Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  <script>
+    // Khởi tạo Leaflet Map với tọa độ của đường
+    var map = L.map('map').setView([{{ street.latitude }}, {{ street.longitude }}], 16);
+
+    // Thêm layer Tile cho bản đồ
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Thêm marker cho vị trí
+    L.marker([{{ street.latitude }}, {{ street.longitude }}])
+        .bindPopup('Đây là đường {{ street.name }}')
+        .addTo(map)
+        .openPopup();
+
+    // Chức năng chỉ đường
+    function getCurrentLocationAndRoute() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var userLat = position.coords.latitude;
+                var userLng = position.coords.longitude;
+
+                L.Routing.control({
+                    waypoints: [
+                        L.latLng(userLat, userLng),
+                        L.latLng({{ street.latitude }}, {{ street.longitude }})
+                    ],
+                    routeWhileDragging: true
+                }).addTo(map);
+            }, function(error) {
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        alert("Người dùng đã từ chối yêu cầu định vị.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("Thông tin vị trí không có sẵn.");
+                        break;
+                    case error.TIMEOUT:
+                        alert("Yêu cầu lấy vị trí đã hết thời gian.");
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        alert("Một lỗi không xác định đã xảy ra.");
+                        break;
+                }
+            });
+        } else {
+            alert("Trình duyệt của bạn không hỗ trợ chức năng định vị.");
+        }
+    }
+  </script>
+  <h2 class="card-title"></h2>
+  <button class="btn btn-sm btn-primary" onclick="getCurrentLocationAndRoute()">Chỉ đường từ vị trí của tôi</button>
+  <h2 class="card-title"></h2>
+  <div class="row">
+    <div class="col-md-12">
+      <p><strong>Phân Loại:</strong> {{ street.category }}</p>
+      <p><strong>Mô Tả:</strong> {{ street.description }}</p>
+      <p><strong>Mức Quan Trọng:</strong> {{ street.importance_level }}</p>
+      <p><strong>Tầm Quan Trọng:</strong> {{ street.significance }}</p>
+    </div>
+  </div>
+  {% if user_authenticated %}
+    <a href="{% url 'edit_street' street.pk %}" class="btn btn-sm btn-warning">Sửa</a>
+    <a href="{% url 'delete_street' street.pk %}" class="btn btn-sm btn-danger">Xóa</a>
+  {% endif %}
+{% endblock %}

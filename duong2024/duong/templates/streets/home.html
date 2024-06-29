@@ -1,0 +1,44 @@
+
+
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <form action="{% url 'search_street' %}" method="GET" class="mb-3">
+                  <h3>Tra Cứu Tên Đường</h3>
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Nhập tên đường...">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div class="col-md-12">
+                <h2>Bản Đồ</h2>
+                <div id="map" style="height: 600px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thư viện Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        // Khởi tạo Leaflet Map với tọa độ tỉnh Quảng Bình
+        var map = L.map('map').setView([17.4847, 106.6236], 12);
+
+        // Thêm layer Tile cho bản đồ
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Thêm tính năng tìm kiếm
+        var searchControl = new L.Control.GeoSearch({
+            provider: new L.GeoSearch.Provider.OpenStreetMap(),
+        }).addTo(map);
+    </script>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Thêm Đường Mới</h1>
+    <form method="post" class="needs-validation" novalidate>
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.stt.errors }}
+        <label for="id_stt">Số Thứ Tự</label>
+        {{ form.stt }}
+      </div>
+      <div class="form-group">
+        {{ form.name.errors }}
+        <label for="id_name">Tên Đường <span class="text-danger">*</span></label>
+        {{ form.name }}
+      </div>
+      <div class="form-group">
+        {{ form.category.errors }}
+        <label for="id_category">Phân Loại</label>
+        {{ form.category }}
+      </div>
+      <div class="form-group">
+        {{ form.description.errors }}
+        <label for="id_description">Mô Tả</label>
+        {{ form.description }}
+      </div>
+      <div class="form-group">
+        {{ form.importance_level.errors }}
+        <label for="id_importance_level">Mức Quan Trọng</label>
+        {{ form.importance_level }}
+      </div>
+      <div class="form-group">
+        {{ form.significance.errors }}
+        <label for="id_significance">Tầm Quan Trọng</label>
+        {{ form.significance }}
+      </div>
+      <div class="form-group">
+        {{ form.longitude.errors }}
+        <label for="id_longitude">Kinh Độ</label>
+        {{ form.longitude }}
+      </div>
+      <div class="form-group">
+        {{ form.latitude.errors }}
+        <label for="id_latitude">Vĩ Độ</label>
+        {{ form.latitude }}
+      </div>
+      <button type="submit" class="btn btn-primary">Thêm</button>
+    </form>
+    <p class="text-danger mt-2">* Bắt buộc nhập</p>
+  </div>
+{% endblock %}
